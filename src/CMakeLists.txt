@@ -1,8 +1,15 @@
 set(GBAJAM_SOURCES
 	main.c
+	common.c
+	gamestates.c
+	menu.c
 )
 
 set(GBAJAM_HEADERS
+	common.h
+	gamestates.h
+	types.h
+	menu.h
 )
 
 target_sources(gbajam-2022

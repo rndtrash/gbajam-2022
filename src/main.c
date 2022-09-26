@@ -4,6 +4,8 @@
 
 #include "soundbank.h"
 
+#include "common.h"
+
 #ifndef ASSETS_GBFS
 extern const GBFS_FILE assets_gbfs[];
 #else
@@ -34,7 +36,7 @@ int main() {
     mmInitDefault((mm_addr) soundbank_bin, 8);
 
     // Start playing module
-    mmStart(MOD_NOGOOD, MM_PLAY_LOOP);
+    mmStart(MOD_DREAMY, MM_PLAY_LOOP);
 
     mm_sound_effect ambulance = {
         { SFX_HAMPTER }, // id
@@ -55,11 +57,15 @@ int main() {
     // sound effect handle (for cancelling it later)
     mm_sfxhand amb = 0;
 
+	game_init();
+
     while (1) {
         VBlankIntrWait();
         mmFrame();
 
         key_poll();
+
+		game_loop();
 
         // Play looping ambulance sound effect out of left speaker if A button is hit
         if (key_hit(KEY_A)) {
