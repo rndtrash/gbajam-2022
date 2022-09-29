@@ -12,14 +12,14 @@ void menu_init()
 				.name = "Sound",
 				.type = MENU_TYPE_VOLUME,
 				.bottomBound = 0,
-				.topBound = 5,
+				.topBound = 4,
 				.variable = &(g_game.soundVolume)
 			},
 			(struct MenuItem) {
 				.name = "Music",
 				.type = MENU_TYPE_VOLUME,
 				.bottomBound = 0,
-				.topBound = 5,
+				.topBound = 4,
 				.variable = &(g_game.musicVolume)
 			},
 		}

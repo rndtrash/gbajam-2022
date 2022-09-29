@@ -1,6 +1,7 @@
 gba_add_maxmod_soundbank(soundbank GENERATE_HEADER
 	${CMAKE_CURRENT_LIST_DIR}/hampter.wav
 	${CMAKE_CURRENT_LIST_DIR}/dreamy.mod
+	${CMAKE_CURRENT_LIST_DIR}/abyssal.xm
 )
 set_target_properties(soundbank PROPERTIES SUFFIX ".bin")
 

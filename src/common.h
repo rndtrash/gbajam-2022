@@ -4,7 +4,7 @@
 #include "types.h"
 #include "menu.h"
 
-#define TRANSITION_TIME 1000
+#define TRANSITION_TIME (1 << SHIFT_AMOUNT)
 
 extern GSInit const GAME_INITS[];
 extern GSDraw const GAME_DRAWS[];
