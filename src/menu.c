@@ -1,5 +1,8 @@
 #include "menu.h"
 
+#include <maxmod.h>
+#include "soundbank.h"
+
 struct Menu MENU_SETTINGS;
 struct Menu MENU_ROOT;
 
@@ -37,6 +40,8 @@ void menu_init()
 	g_gameStates.menu.menuStackTop = 0;
 	g_gameStates.menu.current = &MENU_ROOT;
 	g_gameStates.menu.item = 0;
+
+	mmStart(MOD_DREAMY, MM_PLAY_LOOP);
 }
 
 void menu_draw()

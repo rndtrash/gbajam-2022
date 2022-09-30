@@ -2,9 +2,19 @@
 #define COMMON_H
 
 #include "types.h"
+
+#include "intro.h"
 #include "menu.h"
+//#include "game.h"
+//#include "about.h"
 
 #define TRANSITION_TIME (1 << SHIFT_AMOUNT)
+
+#ifndef ASSETS_GBFS
+extern const GBFS_FILE assets_gbfs[];
+#else
+extern const char __rom_end[];
+#endif
 
 extern GSInit const GAME_INITS[];
 extern GSDraw const GAME_DRAWS[];

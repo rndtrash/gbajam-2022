@@ -1,3 +1,4 @@
+#include <agbabi.h>
 #include <tonc.h>
 #include <gbfs.h>
 #include <maxmod.h>
@@ -5,12 +6,6 @@
 #include "soundbank.h"
 
 #include "common.h"
-
-#ifndef ASSETS_GBFS
-extern const GBFS_FILE assets_gbfs[];
-#else
-extern const char __rom_end[];
-#endif
 
 int main() __attribute__((noreturn));
 
@@ -22,11 +17,7 @@ int main()
 	u32 soundbank_size;
 	const void * soundbank_bin = gbfs_get_obj(assets_gbfs, "soundbank.bin", &soundbank_size);
 
-	REG_DISPCNT = DCNT_MODE0 | DCNT_BG0;
-	tte_init_chr4c_default(0, BG_CBB(0) | BG_SBB(31));
-
-	tte_erase_screen();
-	tte_write("MaxMod Audio demo\nHold A for hamter sound\nPress B for hamter sound");
+	REG_DISPCNT = DCNT_MODE0 | DCNT_BG0 | DCNT_BG1 | DCNT_BG2 | DCNT_BG3 | DCNT_OBJ;
 
 	irq_init(NULL);
 
@@ -37,10 +28,6 @@ int main()
 
 	// initialise maxmod with soundbank and 8 channels
 	mmInitDefault((mm_addr) soundbank_bin, 8);
-
-	// Start playing module
-	mmStart(MOD_DREAMY, MM_PLAY_LOOP);
-	//mmStart(MOD_ABYSSAL, MM_PLAY_ONCE);
 
 	mm_sound_effect ambulance = {
 		{ SFX_HAMPTER }, // id

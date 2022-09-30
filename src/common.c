@@ -3,21 +3,24 @@
 #include <maxmod.h>
 #include <tonc.h>
 
-#define NIBBLE2ASCIIHEX(n) ((char) (((n) < 10) ? (n) + 0x30 : (n) + 0x37))
+//#define NIBBLE2ASCIIHEX(n) ((char) (((n) < 10) ? (n) + 0x30 : (n) + 0x37))
 
 GSInit const GAME_INITS[] = {
+	[GAME_STATE_INTRO] = intro_init,
 	[GAME_STATE_MENU] = menu_init,
-//	GAME_STATE_GAME] = game_init,
-//	GAME_STATE_ABOUT] = about_init
+//	[GAME_STATE_GAME] = game_init,
+//	[GAME_STATE_ABOUT] = about_init
 };
 
 GSDraw const GAME_DRAWS[] = {
+	[GAME_STATE_INTRO] = intro_draw,
 	[GAME_STATE_MENU] = menu_draw,
 //	[GAME_STATE_GAME] = game_draw,
 //	[GAME_STATE_ABOUT] = about_draw
 };
 
 GSUpdate const GAME_UPDATES[] = {
+	[GAME_STATE_INTRO] = intro_update,
 	[GAME_STATE_MENU] = menu_update,
 //	[GAME_STATE_GAME] = game_update,
 //	[GAME_STATE_ABOUT] = about_update
@@ -30,20 +33,20 @@ void game_init()
 	g_game = (struct Game){
 		.gameState = GAME_STATE_INVALID,
 
-		.transition = (struct Transition) { .to = GAME_STATE_INVALID, .state = TRANSITION_IN, .timer = TRANSITION_TIME },
+		.transition = (struct Transition) { .to = GAME_STATE_INVALID, .state = TRANSITION_IN, .timer = 0 },
 
-		.draw = GAME_DRAWS[GAME_STATE_MENU],
-		.update = GAME_UPDATES[GAME_STATE_MENU],
+		.draw = NULL,
+		.update = NULL,
 
-		.soundVolume = 5,
-		.musicVolume = 5
+		.soundVolume = 4,
+		.musicVolume = 3
 	};
-	transition(GAME_STATE_MENU);
+	transition(GAME_STATE_INTRO);
 }
 
 void game_loop()
 {
-	int dt = (60 << SHIFT_AMOUNT) / 1000; // TODO: use millis() or smth like that
+	int dt = (1 << SHIFT_AMOUNT) / 60; // TODO: use millis() or smth like that
 
 	g_game.draw();
 	transition_draw();
@@ -81,6 +84,9 @@ void transition(int to)
 	g_game.transition.to = to;
 	g_game.transition.state = (g_game.gameState == GAME_STATE_INVALID) ? TRANSITION_IN : TRANSITION_OUT;
 	g_game.transition.timer = TRANSITION_TIME;
+
+	if (g_game.transition.state == TRANSITION_IN)
+		change_game_state(to);
 }
 
 void transition_draw()
@@ -96,8 +102,18 @@ void transition_update(int dt)
 			if (g_game.transition.state == TRANSITION_OUT) {
 				g_game.transition.state = TRANSITION_IN;
 				g_game.transition.timer = TRANSITION_TIME;
+				change_game_state(g_game.transition.to);
 			} else
 				g_game.transition.timer = 0;
 		}
 	}
+}
+
+void change_game_state(int to)
+{
+	g_game.draw = GAME_DRAWS[to];
+	g_game.update = GAME_UPDATES[to];
+	g_game.gameState = to;
+
+	GAME_INITS[to]();
 }

@@ -8,6 +8,10 @@ struct MenuStackItem {
 	int item;
 };
 
+struct GSIntro {
+	int timer;
+};
+
 struct GSMenu {
 	struct MenuStackItem menuStack[MAX_MENU_DEPTH];
 	int menuStackTop;
@@ -17,6 +21,7 @@ struct GSMenu {
 };
 
 union GSUnion {
+	struct GSIntro intro;
 	struct GSMenu menu;
 //	struct GSGame game;
 //	struct GSAbout about;
