@@ -98,7 +98,7 @@ void transition_update(int dt)
 {
 	if (g_game.transition.timer > 0) {
 		g_game.transition.timer -= dt;
-		if (g_game.transition.timer < 0) {
+		if (g_game.transition.timer <= 0) {
 			if (g_game.transition.state == TRANSITION_OUT) {
 				g_game.transition.state = TRANSITION_IN;
 				g_game.transition.timer = TRANSITION_TIME;
